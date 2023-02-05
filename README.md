@@ -1,6 +1,7 @@
 <div align="center">
 <img src="public/logo.png" alt="logo" width="129" height="125"/>
-<h1>Flamingo - a Nostr browser extension focused on UX</h1>
+<h1>Flamingo</h1>
+<p>A Nostr browser extension focused on UX<p>
 </div>
 
 Flamingo is based on the [NIP-07 standard](https://github.com/nostr-protocol/nips/blob/master/07.md)
