@@ -1,5 +1,5 @@
 <div align="center">
-<img src="public/icon-128.png" alt="logo"/>
+<img src="public/logo.png" alt="logo" width="129" height="125"/>
 <h1>Flamingo - a Nostr browser extension focused on UX</h1>
 </div>
 
