@@ -15,6 +15,7 @@ window.addEventListener("message", async (evt: MessageEvent<MessageData>) => {
 
   if (data.target === "flamingo-worker") {
     const { requestData } = data
+
     const responseData = await chrome.runtime.sendMessage(requestData)
 
     // Reply to client:

@@ -7,8 +7,8 @@ import {
 
 import { WINDOW_WIDTH, WINDOW_HEIGHT } from "@theme/globalStyles"
 
+import { PAGE_ALLOWED_METHODS } from "@src/utils/public-methods"
 import { RequestData } from "@src/utils/types"
-
 import { getNpub, getNsec, storeNsec, clearAccounts } from "./storage"
 
 console.log("background loaded")
@@ -23,6 +23,13 @@ export const nsecOrPrivkeyToNsec = async (input: string) => {
 
 type SendResponseFunc = (event: NostrEvent) => void
 
+const isTrustedExtensionSender = (sender: chrome.runtime.MessageSender) => {
+  const extensionOrigin = `chrome-extension://${chrome.runtime.id}`
+  const senderUrl = sender.url ?? sender.origin
+
+  return senderUrl?.startsWith(`${extensionOrigin}/`) ?? false
+}
+
 const signRequests: Record<
   string,
   {
@@ -33,8 +40,13 @@ const signRequests: Record<
 
 const listener = () => {
   chrome.runtime.onMessage.addListener(
-    (message: Omit<RequestData, "id">, _sender, sendResponse) => {
+    (message: Omit<RequestData, "id">, sender, sendResponse) => {
       const { method, data } = message
+
+      if (!isTrustedExtensionSender(sender) && !PAGE_ALLOWED_METHODS.has(method)) {
+        sendResponse(null)
+        return
+      }
 
       switch (method) {
         case "get_npub": {
